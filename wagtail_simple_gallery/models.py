@@ -65,6 +65,8 @@ class SimpleGalleryIndex(Page):
 		FieldPanel('intro_text', classname="full")
 	]
 
+	template = 'wagtail_simple_gallery/simple_gallery_index.html'
+
 
 class SimpleGalleryPage(Page):
 	intro_title = models.CharField(
@@ -132,7 +134,7 @@ class SimpleGalleryPage(Page):
 
 	parent_page_types = ['wagtail_simple_gallery.SimpleGalleryIndex']
 
-	template = getattr(settings, 'SIMPLE_GALLERY_TEMPLATE', 'wagtail_simple_gallery/simple_gallery_index.html')
+	template = getattr(settings, 'SIMPLE_GALLERY_TEMPLATE', 'wagtail_simple_gallery/simple_gallery.html')
 
 
 def get_gallery_images(collection, page=None, tags=None):

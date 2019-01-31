@@ -1,22 +1,74 @@
-{% load static wagtailimages_tags wagtailsimplegallery_tags %}
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags wagtailsimplegallery_tags %}
 
-  <link rel="stylesheet" href="{% static 'css/baguetteBox.min.css' %}"/>
+{% block title %}{{ page.seo_title }}{% endblock %}
+{% block metadesc %}{{ page.search_description }}{% endblock %}
 
-  <div class="gallery-container">
-  {% for img in gallery_images %}
-    {% image img width-260 as img_thumb %}
-    <span class="gallery-thumbnail-container">
+{% block extra_style %}{% endblock %}
+
+{% block content %}
+	<div class="gallery-wrapper">
+		<header>
+			<h1>{{ page.intro_title }}</h1>
+			{{ page.intro_text|richtext }}
+		</header>
+
+		<link rel="stylesheet" href="{% static 'css/baguetteBox.min.css' %}"/>
+
+		<div class="gallery-container">
+			{% for img in gallery_images %}
+				{% image img width-260 as img_thumb %}
+				<span class="gallery-thumbnail-container">
       <a href="{{ img|original_url }}" title="{{ img_thumb.alt|hide_num_order }}">
         <img src="{{ img_thumb.url }}" alt="{{ img_thumb.alt }}" class="gallery-thumbnail">
       </a>
       <link rel="preload" href="{{ img|original_url }}">
     </span>
-  {% endfor %}
-  </div>
+			{% endfor %}
+		</div>
 
-  {% if page.use_lightbox or use_lightbox %}
-  <script src="{% static 'js/baguetteBox.min.js' %}"></script>
-  <script type="text/javascript">
-    baguetteBox.run('.gallery-container');
-  </script>
-  {% endif %}
+		{% if page.use_lightbox or use_lightbox %}
+			<script src="{% static 'js/baguetteBox.min.js' %}"></script>
+			<script type="text/javascript">
+                baguetteBox.run('.gallery-container');
+			</script>
+		{% endif %}
+		{% if gallery_images.has_next or gallery_images.has_previous %}
+			<div class="container">
+				<div class="gallery-pagination-container row">
+					<div class="col-sm-2">
+						{% if gallery_images.has_previous %}
+							<a href="?page=
+
+
+									{{ gallery_images.previous_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&amp;{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">&lt;&lt;
+								Previous</a>
+						{% endif %}
+					</div>
+					<div class="col-sm-8 text-center">
+						<ul class="gallery-pagination padding-0">
+							{% for page in gallery_images.paginator.page_range %}
+								<li class="gallery-pagination-item {% if gallery_images.number == page %}active{% endif %}">
+									<a class="{% if gallery_images.number == page %}active{% endif %}"
+									   href="?page={{ page }}">{{ page }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="col-sm-2 text-right">
+						{% if gallery_images.has_next %}
+							<a href="?page=
+
+
+									{{ gallery_images.next_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&amp;{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">Next
+								&gt;&gt;</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block extra_js %}{% endblock %}
+
