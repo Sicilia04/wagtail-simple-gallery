@@ -112,6 +112,7 @@ class SimpleGalleryPage(Page):
 		FieldPanel('intro_title', classname='full title'),
 		FieldPanel('intro_text', classname='full title'),
 		FieldPanel('collection'),
+		FieldPanel('highlight'),
 		FieldPanel('images_per_page', classname='full title'),
 		FieldPanel('use_lightbox'),
 		FieldPanel('order_images_by'),
