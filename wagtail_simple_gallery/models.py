@@ -9,6 +9,8 @@ from wagtail.core.models import Page
 from wagtail.images import get_image_model
 from wagtail.search import index
 
+from wagtail_simple_gallery.fields import UniqueBooleanField
+
 IMAGE_ORDER_TYPES = (
 	(1, 'Image title'),
 	(2, 'Newest image first'),
@@ -98,6 +100,11 @@ class SimpleGalleryPage(Page):
 		verbose_name=_('Use lightbox'),
 		default=True,
 		help_text=_('Use lightbox to view larger images when clicking the thumbnail.')
+	)
+	highlight = UniqueBooleanField(
+		verbose_name=_("Highlight"),
+		default=False,
+		help_text=_('If page will be highlight.')
 	)
 	order_images_by = models.IntegerField(choices=IMAGE_ORDER_TYPES, default=1)
 
